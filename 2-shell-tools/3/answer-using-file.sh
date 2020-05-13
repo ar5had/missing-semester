@@ -5,20 +5,22 @@ echo "Starting program at $(date)"
 echo "Running program $0 with $# arguments with pid $$"
 
 count=1
-stderr=""
-stdout=""
 
-sh ./random.sh
+sh ./random.sh 2>err 1>out
 
 echo "Last error code - $?"
 
 while [ $? -eq 0 ]
 do
 
-sh ./random.sh
 count=$(( count + 1 ))
-
+sh ./random.sh 2>err 1>out
 done
+
+stderr=$(cat err)
+stdout=$(cat out)
+
+rm err out
 
 echo "It took $count times to random.sh to fail."
 echo "STDERR: $stderr"
